@@ -1,0 +1,9 @@
+# Required packages for the Dolphin Geek configuration
+# Target: Arch Linux / CachyOS
+
+dolphin
+qt6ct
+kvantum
+papirus-icon-theme
+ttf-space-mono-nerd
+ttf-jetbrains-mono-nerd
