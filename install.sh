@@ -12,9 +12,25 @@ if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
   exit 1
 fi
 
-# This repository contains user configuration only. Dependencies are intentionally
-# not installed automatically because package names differ between distributions.
-mkdir -p "$HOME/.config/dolphin" "$HOME/.config/qt6ct"
+# This configuration is targeted at Arch Linux and CachyOS.
+install_dependencies() {
+  if command -v pacman >/dev/null 2>&1; then
+    info "Installing required packages"
+    sudo pacman -S --needed \
+      dolphin \
+      qt6ct \
+      kvantum \
+      papirus-icon-theme \
+      ttf-space-mono-nerd \
+      ttf-jetbrains-mono-nerd
+  else
+    warn "pacman was not found. Please install the required packages listed in packages.txt manually."
+  fi
+}
+
+install_dependencies
+
+mkdir -p "$HOME/.config/qt6ct"
 
 backup_file() {
   local file="$1"
@@ -35,5 +51,6 @@ info "Installing Qt6ct configuration"
 cp -f "$SCRIPT_DIR/qt6ct/qt6ct.conf" "$HOME/.config/qt6ct/qt6ct.conf"
 
 printf '\n\033[1;32mDone!\033[0m Dolphin configuration has been installed.\n'
+printf 'Installed dependencies: Dolphin, Qt6ct, Kvantum, Papirus-Dark, Space Mono Nerd Font, JetBrains Mono Nerd Font.\n'
 printf 'Restart Dolphin for the changes to take effect.\n'
 printf '\nRepository: %s\n' "$REPO_URL"
